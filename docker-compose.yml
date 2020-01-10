@@ -1,12 +1,31 @@
 version: '3'
 services:
+  loader:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    env_file:
+      .env
+    container_name: loader
   jupyter:
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./:/home/jovyan/
+      - ./ipynb:/home/jovyan/ipynb
+      - ./data:/home/jovyan/data
     ports:
       - "8888:8888"
-    env_file:
-      - .env
+    env_file: 
+      .env
+    container_name: jupyter
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    container_name: db
+volumes: 
+  pgdata:
