@@ -1,13 +1,13 @@
-FROM        python:3.7-alpine3.10
+FROM        python:3.7-slim-buster
 LABEL       maintainer="r.v.lunev@gmail.com"
-RUN         apk add --no-cache --update \
-            python3 python3-dev gcc \
-            gfortran musl-dev g++ \
-            libffi-dev openssl-dev \
-            libxml2 libxml2-dev \
-            libxslt libxslt-dev \
-            libjpeg-turbo-dev zlib-dev \
-            postgresql-libs postgresql-dev
+RUN         apt-get update && \
+            apt-get dist-upgrade -y && \
+            apt-get install --no-install-recommends -yq \
+            gcc \
+            libc-dev \
+            libpq-dev \
+            make && \
+            rm -rf /var/lib/apt/lists/*
 RUN         pip install --upgrade pip
 COPY        requirements.txt /opt/app/
 RUN         pip install -r /opt/app/requirements.txt
