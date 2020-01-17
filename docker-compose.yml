@@ -20,14 +20,14 @@ services:
     ports:
       - "5432:5432"
     container_name: db
-  loader:
+  luigi:
     build:
-      context: .
-      dockerfile: ./docker/loader/Dockerfile
+      context: ./docker/luigi
+      dockerfile: Dockerfile
     volumes: 
       - ./data:/home/loader/data
-    env_file:
-      .env
-    container_name: loader
+    ports:
+      - "8082:8082"
+    container_name: luigi
 volumes: 
   pgdata:
